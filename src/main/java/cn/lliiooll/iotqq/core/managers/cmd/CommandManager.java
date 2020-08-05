@@ -63,15 +63,14 @@ public class CommandManager {
             else
                 IOTGlobal.sendFriendMessage(MessageChain.newCall(new TextMessage("指令发送太快了哦")), (Friend) sender);
         } else {
-            //cmds.execute(() -> callA(messages, sender));
-            callA(messages, sender, group, type);
+            cmds.execute(() -> callA(messages, sender, group, type));
         }
         last = System.currentTimeMillis();
     }
 
     @SneakyThrows
     private static void callA(Message messages, User sender, Group group, MessageFrom type) {
-        String msg = messages.toString().replaceFirst(IOTQQMain.command, "");
+        String msg = messages.messageToString().replaceFirst(IOTQQMain.command, "");
         while (msg.contains("  ")) {
             msg = msg.replace("  ", " ");// 吧两个空格替换为一个
         }
@@ -86,6 +85,7 @@ public class CommandManager {
                 cr.setArgs(Arrays.asList(args));
                 cr.setSender(sender);
                 cr.setSource(messages);
+                cr.setType(type);
                 cr.setGroup(type == MessageFrom.GROUP ? group : new Group());
                 if (!(Arrays.asList(executor.getInterfaces()).contains(CommandExecutor.class) && (boolean) executor.getMethod("onCommand", CommandResult.class).invoke(executor.newInstance(), cr))) {
                     if (type == MessageFrom.GROUP)
@@ -95,7 +95,7 @@ public class CommandManager {
                 }
             } else {
                 if (type == MessageFrom.GROUP)
-                    IOTGlobal.sendGroupMessage(MessageChain.newCall(new TextMessage("未知的指令.请使用 " + IOTQQMain.command + "cmdlist 来获得指令列表")), group);
+                    group.sendMessage(MessageChain.newCall(new TextMessage("未知的指令.请使用 " + IOTQQMain.command + "cmdlist 来获得指令列表")));
                 else
                     IOTGlobal.sendFriendMessage(MessageChain.newCall(new TextMessage("未知的指令.请使用 " + IOTQQMain.command + "cmdlist 来获得指令列表")), (Friend) sender);
             }

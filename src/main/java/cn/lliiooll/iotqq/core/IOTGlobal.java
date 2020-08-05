@@ -2,6 +2,9 @@ package cn.lliiooll.iotqq.core;
 
 import cn.lliiooll.iotqq.core.data.message.MessageChain;
 import cn.lliiooll.iotqq.core.data.message.data.*;
+import cn.lliiooll.iotqq.core.managers.event.EventManager;
+import cn.lliiooll.iotqq.core.managers.event.data.FriendMessageSendEvent;
+import cn.lliiooll.iotqq.core.managers.event.data.GroupMessageSendEvent;
 import cn.lliiooll.iotqq.core.queue.IQueue;
 import cn.lliiooll.iotqq.core.queue.RequestBuilder;
 import cn.lliiooll.iotqq.core.data.group.Group;
@@ -160,8 +163,7 @@ public class IOTGlobal {
         IQueue.sendRequest(RequestBuilder.builder()
                 .setUrl(url)
                 .setRequest(json.toJSONString())
-                .setAction(c -> {
-                }).build());
+                .setAction(c -> EventManager.invoke(new FriendMessageSendEvent(message.list.get(0)))).build());
     }
 
     /**
@@ -251,8 +253,7 @@ public class IOTGlobal {
         IQueue.sendRequest(RequestBuilder.builder()
                 .setUrl(url)
                 .setRequest(json.toJSONString())
-                .setAction(c -> {
-                }).build());
+                .setAction(c -> EventManager.invoke(new FriendMessageSendEvent(message.list.get(0)))).build());
     }
 
     /**
@@ -343,8 +344,7 @@ public class IOTGlobal {
         IQueue.sendRequest(RequestBuilder.builder()
                 .setUrl(url)
                 .setRequest(json.toJSONString())
-                .setAction(c -> {
-                }).build());
+                .setAction(c -> EventManager.invoke(new GroupMessageSendEvent(message.list.get(0),group))).build());
     }
 
 }

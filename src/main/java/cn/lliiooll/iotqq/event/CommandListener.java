@@ -7,19 +7,22 @@ import cn.lliiooll.iotqq.core.managers.cmd.CommandManager;
 import cn.lliiooll.iotqq.core.managers.event.EventHandler;
 import cn.lliiooll.iotqq.core.managers.event.data.FriendMessageEvent;
 import cn.lliiooll.iotqq.core.managers.event.data.GroupMessageEvent;
+import org.apache.logging.log4j.LogManager;
 
 public class CommandListener {
 
     @EventHandler
     public void onGroup(GroupMessageEvent event) {
-        if (event.getMessage().toString().startsWith(IOTQQMain.command)) {
+        if (event.getMessage().messageToString().startsWith(IOTQQMain.command)) {
+            LogManager.getLogger().info("触发群指令");
             CommandManager.call(event.getMessage(), event.getSender(), event.getGroup(), MessageFrom.GROUP);
         }
     }
 
     @EventHandler
     public void onPrivate(FriendMessageEvent event) {
-        if (event.getMessage().toString().startsWith(IOTQQMain.command)) {
+        if (event.getMessage().messageToString().startsWith(IOTQQMain.command)) {
+            LogManager.getLogger().info("触发私聊指令");
             CommandManager.call(event.getMessage(), event.getSender(), new Group(), MessageFrom.FRIEND);
         }
     }
