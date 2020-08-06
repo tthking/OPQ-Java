@@ -13,6 +13,7 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.google.common.base.Strings;
 import com.google.common.collect.Lists;
+import com.google.common.collect.Maps;
 import lombok.Getter;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -20,6 +21,7 @@ import org.apache.logging.log4j.Logger;
 import java.util.Base64;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class IOTGlobal {
     @Getter
@@ -28,9 +30,9 @@ public class IOTGlobal {
     private static String url;
     private static Logger log = LogManager.getLogger();
     @Getter
-    public static List<Friend> friends = Lists.newArrayList();
+    public static Map<Long, Friend> friends = Maps.newHashMap();
     @Getter
-    public static List<Group> groups = Lists.newArrayList();
+    public static Map<Long, Group> groups = Maps.newHashMap();
 
     public static void init(long qq, String url) {
         IOTGlobal.qq = qq;
@@ -52,7 +54,7 @@ public class IOTGlobal {
                         Group group = new Group();
                         group.setId(json.getLongValue("GroupID"));
                         group.setName(json.getString("GroupName"));
-                        groups.add(group);
+                        groups.put(group.getId(), group);
                     }
                     log.info("群获取完毕，总计: " + (groups.size() - 1) + "个，耗时 " + (System.currentTimeMillis() - time) + "ms");
                 }).build());
@@ -71,7 +73,7 @@ public class IOTGlobal {
                         Friend friend = new Friend();
                         friend.setNick(j.getString("NickName"));
                         friend.setId(j.getLongValue("FriendUin"));
-                        friends.add(friend);
+                        friends.put(friend.getId(), friend);
                     }
                     log.info("好友获取完毕，总计: " + (friends.size() - 1) + "个，耗时 " + (System.currentTimeMillis() - time) + "ms");
                 }).build());
@@ -344,7 +346,48 @@ public class IOTGlobal {
         IQueue.sendRequest(RequestBuilder.builder()
                 .setUrl(url)
                 .setRequest(json.toJSONString())
-                .setAction(c -> EventManager.invoke(new GroupMessageSendEvent(message.list.get(0),group))).build());
+                .setAction(c -> EventManager.invoke(new GroupMessageSendEvent(message.list.get(0), group))).build());
+    }
+
+    /**
+     * 通过id获取当前qq的群
+     *
+     * @param id
+     * @return
+     */
+    public static Group getGroup(long id) {
+        return groups.containsKey(id) ? groups.get(id) : new Group();
+    }
+
+    /**
+     * 通过id获取当前qq的好友
+     *
+     * @param id
+     * @return
+     */
+    public static Friend getFriend(long id) {
+        return friends.containsKey(id) ? friends.get(id) : new Friend();
+    }
+
+    /**
+     * 通过id获取当前qq的群
+     *
+     * @param id
+     * @return
+     */
+
+    public static Group getGroupOrNull(long id) {
+        return groups.containsKey(id) ? groups.get(id) : null;
+    }
+
+    /**
+     * 通过id获取当前qq的好友
+     *
+     * @param id
+     * @return
+     */
+    public static Friend getFriendOrNull(long id) {
+        return friends.containsKey(id) ? friends.get(id) : null;
     }
 
 }
