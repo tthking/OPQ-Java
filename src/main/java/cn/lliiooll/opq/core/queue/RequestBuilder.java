@@ -2,7 +2,8 @@ package cn.lliiooll.opq.core.queue;
 
 public class RequestBuilder {
 
-    private RequestFinished action;
+    private RequestFinished action = result -> {
+    };
     private String request;
     private String url;
 

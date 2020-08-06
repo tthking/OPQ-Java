@@ -13,7 +13,7 @@ public class BaseMessage implements Message {
     public BaseMessage(long msgid, long random, long time, User sender) {
         this.msgid = msgid;
         this.random = random;
-        this.time = time;
+        this.time = (time + "").length() >= (System.currentTimeMillis() + "").length() ? time / 1000 : time;
         this.sender = sender;
     }
 

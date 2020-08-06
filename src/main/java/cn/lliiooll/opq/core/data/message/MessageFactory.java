@@ -37,7 +37,7 @@ public class MessageFactory {
                 member.setFromGroup(group);
                 member.setId(senderId);
                 member.setName(senderName);
-                Message message = executeMessage(msgid, random, msg, time, member, messageType);
+                BaseMessage message = executeMessage(msgid, random, msg, time, member, messageType);
                 EventManager.invoke(new GroupMessageEvent(message, group, member));
             }
         } else if (type == MessageFrom.FRIEND) {
@@ -45,14 +45,14 @@ public class MessageFactory {
             if (senderId != OPQGlobal.getQq()) {
                 Friend friend = new Friend();
                 friend.setId(senderId);
-                Message message = executeMessage(msgid, 0, msg, time, friend, messageType);
+                BaseMessage message = executeMessage(msgid, 0, msg, time, friend, messageType);
                 EventManager.invoke(new FriendMessageEvent(message, friend));
             }
             //long getterId = data.getLongValue("ToUin");
         }
     }
 
-    private static Message executeMessage(long msgid, long random, String msg, long time, User sender, MessageType messageType) {
+    private static BaseMessage executeMessage(long msgid, long random, String msg, long time, User sender, MessageType messageType) {
         switch (messageType) {
             case TextMsg:
                 return new TextMessage(msg, msgid, random, time, sender);

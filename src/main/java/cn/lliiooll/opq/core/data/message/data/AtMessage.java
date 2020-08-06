@@ -13,24 +13,23 @@ import java.util.Collections;
 @Data
 public class AtMessage extends BaseMessage {
 
-    public final JSONArray id;
+    public final Long[] id;
     public String content = "[AT]";
 
     public AtMessage(JSONArray id) {
         super(0, 0, System.currentTimeMillis(), new Friend(OPQGlobal.getQq()));
-        this.id = id;
+        this.id = id.toArray(new Long[0]);
     }
 
     public AtMessage(JSONArray id, String content, long msgid, long random, long time, User sender) {
         super(msgid, random, time, sender);
-        this.id = id;
+        this.id = id.toArray(new Long[0]);
         this.content = content;
     }
 
-    public AtMessage(long[] id, String content) {
+    public AtMessage(Long[] id) {
         super(0, 0, System.currentTimeMillis(), new Friend(OPQGlobal.getQq()));
-        this.id = new JSONArray(Collections.singletonList(id));
-        this.content = content;
+        this.id = id;
     }
 
     @Override

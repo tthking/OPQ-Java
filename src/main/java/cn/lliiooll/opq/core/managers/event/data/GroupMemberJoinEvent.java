@@ -6,9 +6,9 @@ import cn.lliiooll.opq.core.managers.event.HandlerList;
 import lombok.Getter;
 
 /**
- * 群组退出
+ * 群组主动加入
  */
-public class GroupExitEvent extends Event {
+public class GroupMemberJoinEvent extends Event {
     private static HandlerList handlers = new HandlerList();
 
     @Getter
@@ -20,7 +20,7 @@ public class GroupExitEvent extends Event {
     @Getter
     private final String name;
 
-    public GroupExitEvent(long inviteId, long id, Group group, String name) {
+    public GroupMemberJoinEvent(long inviteId, long id, Group group, String name) {
         this.id = id;
         this.inviteId = inviteId;
         this.group = group;

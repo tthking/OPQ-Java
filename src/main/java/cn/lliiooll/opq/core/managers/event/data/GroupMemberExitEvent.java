@@ -8,7 +8,7 @@ import lombok.Getter;
 /**
  * 群组主动退出
  */
-public class GroupExitSuccEvent extends Event {
+public class GroupMemberExitEvent extends Event {
     private static HandlerList handlers = new HandlerList();
 
     @Getter
@@ -20,7 +20,7 @@ public class GroupExitSuccEvent extends Event {
     @Getter
     private final String name;
 
-    public GroupExitSuccEvent(long inviteId, long id, Group group, String name) {
+    public GroupMemberExitEvent(long inviteId, long id, Group group, String name) {
         this.id = id;
         this.inviteId = inviteId;
         this.group = group;

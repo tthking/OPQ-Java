@@ -279,7 +279,7 @@ public class OPQGlobal {
         json.put("toUser", group.getId());
         json.put("sendToType", 2);
         json.put("groupid", 0);
-        json.put("atUser", 1);
+        json.put("atUser", 0);
         json.put("sendMsgType", "TextMsg");
         final StringBuilder msg = new StringBuilder();
         final StringBuilder ats = new StringBuilder().append("[ATUSER(");
@@ -288,7 +288,10 @@ public class OPQGlobal {
                 msg.append(((TextMessage) m).msg);
             } else if (m instanceof AtMessage) {
                 //json.put("atUser", ((AtMessage) m).getId());
-                ats.append(Strings.isNullOrEmpty(ats.toString().replace("[ATUSER(", "")) ? ((AtMessage) m).getId() : "," + ((AtMessage) m).getId());
+                for (Long id : ((AtMessage) m).getId()) {
+                    ats.append(Strings.isNullOrEmpty(ats.toString().replace("[ATUSER(", "")) ? id : "," + id);
+                }
+
             } else if (m instanceof FlashPicMessage) {
                 if (json.containsKey("sendMsgType") && !(json.getString("sendMsgType").equalsIgnoreCase("VoiceMsg") ||
                         json.getString("sendMsgType").equalsIgnoreCase("JsonMsg") ||
@@ -354,7 +357,10 @@ public class OPQGlobal {
             }
         });
         ats.append(")]");
-        json.put("content", msg.append(ats.toString()).toString());
+        if (!Strings.isNullOrEmpty(ats.toString().replace("[ATUSER(", "").replace(")]", ""))) {
+            msg.append(ats.toString());
+        }
+        json.put("content", msg.toString());
         IQueue.sendRequest(RequestBuilder.builder()
                 .setUrl(url)
                 .setRequest(json.toJSONString())
@@ -504,6 +510,24 @@ public class OPQGlobal {
     }
 
     /**
+     * at全体成员
+     */
+    public static void atAll(Group group) {
+        JSONObject json = new JSONObject();
+        String url = "http://" + OPQGlobal.url + "/v1/LuaApiCaller?qq=" + OPQGlobal.qq + "&funcname=SendMsg&timeout=10";
+        json.put("toUser", group.getId());
+        json.put("sendToType", 2);
+        json.put("groupid", 0);
+        json.put("atUser", 0);
+        json.put("sendMsgType", "TextMsg");
+        json.put("content", "");
+        IQueue.sendRequest(RequestBuilder.builder()
+                .setUrl(url)
+                .setRequest(json.toJSONString())
+                .setAction(c -> EventManager.invoke(new GroupMessageSendEvent(new AtMessage(new Long[]{0L}), group))).build());
+    }
+
+    /**
      * 回复消息
      *
      * @param message 要回复的消息
@@ -530,7 +554,9 @@ public class OPQGlobal {
                 msg.append(((TextMessage) m).msg);
             } else if (m instanceof AtMessage) {
                 //json.put("atUser", ((AtMessage) m).getId());
-                ats.append(Strings.isNullOrEmpty(ats.toString().replace("[ATUSER(", "")) ? ((AtMessage) m).getId() : "," + ((AtMessage) m).getId());
+                for (Long id : ((AtMessage) m).getId()) {
+                    ats.append(Strings.isNullOrEmpty(ats.toString().replace("[ATUSER(", "")) ? id : "," + id);
+                }
             } else if (m instanceof FlashPicMessage) {
                 if (json.containsKey("sendMsgType") && !(json.getString("sendMsgType").equalsIgnoreCase("VoiceMsg") ||
                         json.getString("sendMsgType").equalsIgnoreCase("JsonMsg") ||
@@ -596,7 +622,10 @@ public class OPQGlobal {
             }
         });
         ats.append(")]");
-        json.put("content", msg.append(ats.toString()).toString());
+        if (!Strings.isNullOrEmpty(ats.toString().replace("[ATUSER(", "").replace(")]", ""))) {
+            msg.append(ats.toString());
+        }
+        json.put("content", msg.toString());
         json.put("replayInfo", new JSONObject(new HashMap<String, Object>() {{
             put("MsgSeq", message.getMsgid());
             put("MsgTime", message.getTime());
@@ -605,7 +634,10 @@ public class OPQGlobal {
         }}));
         IQueue.sendRequest(RequestBuilder.builder()
                 .setUrl(url)
-                .setRequest(json.toJSONString()).build());
+                .setRequest(json.toJSONString())
+                .setAction(q -> {
+                })
+                .build());
     }
 
     /**

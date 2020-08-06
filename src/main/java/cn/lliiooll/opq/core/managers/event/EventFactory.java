@@ -17,7 +17,7 @@ public class EventFactory {
                 Group g1 = new Group();
                 g1.setName("");
                 g1.setId(eMsg.getLongValue("FromUin"));
-                EventManager.invoke(new GroupJoinEvent(eData.getLongValue("InviteUin"), eData.getLongValue("UserID"), g1, eData.getString("UserName")));
+                EventManager.invoke(new GroupMemberInviteEvent(eData.getLongValue("InviteUin"), eData.getLongValue("UserID"), g1, eData.getString("UserName")));
             case ON_EVENT_GROUP_SHUT:
             case ON_EVENT_GROUP_ADMIN:
             case ON_EVENT_FRIEND_ADDED:
@@ -41,6 +41,7 @@ public class EventFactory {
                 friend.setId(eData.getLongValue("UserID"));
                 friend.setNick(eData.getString("NickName"));
                 EventManager.invoke(new FriendAddedEvent(friend));
+            case ON_EVENT_FRIEND_ADD:
             case ON_EVENT_GROUP_ADMINSYSNOTIFY:
         }
     }

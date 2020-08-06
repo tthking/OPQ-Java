@@ -8,6 +8,7 @@ import cn.lliiooll.opq.utils.JarUtils;
 import cn.lliiooll.opq.websocket.OPQClient;
 import com.alibaba.fastjson.JSONArray;
 import lombok.Getter;
+import lombok.SneakyThrows;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -59,17 +60,18 @@ public class OPQ {
         EventManager.init();
         CommandManager.init();
         connect();
-        listen();
         OPQGlobal.init(this.getQq(), this.getUrl());
         IQueue.init();
+        listen();
     }
 
+    @SneakyThrows
     private void listen() {
-        if (!this.client.isClosed() && !this.client.isClosing()) {
-            JSONArray ja = new JSONArray();
-            ja.add("GetWebConn");
-            ja.add("" + this.getQq());
-            this.client.send("42" + ja.toJSONString());
-        }
+        LogManager.getLogger().info("正在连接。。。");
+        Thread.sleep(5000);
+        JSONArray ja = new JSONArray();
+        ja.add("GetWebConn");
+        ja.add("" + this.getQq());
+        this.client.send("42" + ja.toJSONString());
     }
 }
