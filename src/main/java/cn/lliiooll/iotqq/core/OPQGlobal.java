@@ -12,7 +12,6 @@ import cn.lliiooll.iotqq.core.data.user.Friend;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.google.common.base.Strings;
-import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import lombok.Getter;
 import org.apache.logging.log4j.LogManager;
@@ -20,10 +19,9 @@ import org.apache.logging.log4j.Logger;
 
 import java.util.Base64;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
-public class IOTGlobal {
+public class OPQGlobal {
     @Getter
     public static long qq;
 
@@ -35,8 +33,8 @@ public class IOTGlobal {
     public static Map<Long, Group> groups = Maps.newHashMap();
 
     public static void init(long qq, String url) {
-        IOTGlobal.qq = qq;
-        IOTGlobal.url = url;
+        OPQGlobal.qq = qq;
+        OPQGlobal.url = url;
         refreshFriendList();
         refreshGroupList();
     }
@@ -46,7 +44,7 @@ public class IOTGlobal {
                 .setRequest(new JSONObject(new HashMap<String, Object>() {{
                     put("NextToken", "");
                 }}).toJSONString())
-                .setUrl("http://" + IOTGlobal.url + "/v1/LuaApiCaller?qq=" + IOTGlobal.qq + "&funcname=GetGroupList&timeout=10")
+                .setUrl("http://" + OPQGlobal.url + "/v1/LuaApiCaller?qq=" + OPQGlobal.qq + "&funcname=GetGroupList&timeout=10")
                 .setAction(result -> {
                     JSONObject replay = JSON.parseObject(result);
                     long time = System.currentTimeMillis();
@@ -65,7 +63,7 @@ public class IOTGlobal {
                 .setRequest(new JSONObject(new HashMap<String, Object>() {{
                     put("StartIndex", 0);
                 }}).toJSONString())
-                .setUrl("http://" + IOTGlobal.url + "/v1/LuaApiCaller?qq=" + IOTGlobal.qq + "&funcname=GetQQUserList&timeout=10")
+                .setUrl("http://" + OPQGlobal.url + "/v1/LuaApiCaller?qq=" + OPQGlobal.qq + "&funcname=GetQQUserList&timeout=10")
                 .setAction(result -> {
                     long time = System.currentTimeMillis();
                     JSONObject replay = JSON.parseObject(result);
@@ -87,7 +85,7 @@ public class IOTGlobal {
      */
     public static void sendFriendMessage(MessageChain message, Friend friend) {
         JSONObject json = new JSONObject();
-        String url = "http://" + IOTGlobal.url + "/v1/LuaApiCaller?qq=" + IOTGlobal.qq + "&funcname=SendMsg&timeout=10";
+        String url = "http://" + OPQGlobal.url + "/v1/LuaApiCaller?qq=" + OPQGlobal.qq + "&funcname=SendMsg&timeout=10";
         json.put("toUser", friend.getId());
         json.put("sendToType", 1);
         json.put("groupid", 0);
@@ -177,7 +175,7 @@ public class IOTGlobal {
      */
     public static void sendPrivateMessage(MessageChain message, long id, Group group) {
         JSONObject json = new JSONObject();
-        String url = "http://" + IOTGlobal.url + "/v1/LuaApiCaller?qq=" + IOTGlobal.qq + "&funcname=SendMsg&timeout=10";
+        String url = "http://" + OPQGlobal.url + "/v1/LuaApiCaller?qq=" + OPQGlobal.qq + "&funcname=SendMsg&timeout=10";
         json.put("toUser", id);
         json.put("sendToType", 3);
         json.put("groupid", group.getId());
@@ -266,7 +264,7 @@ public class IOTGlobal {
      */
     public static void sendGroupMessage(MessageChain message, Group group) {
         JSONObject json = new JSONObject();
-        String url = "http://" + IOTGlobal.url + "/v1/LuaApiCaller?qq=" + IOTGlobal.qq + "&funcname=SendMsg&timeout=10";
+        String url = "http://" + OPQGlobal.url + "/v1/LuaApiCaller?qq=" + OPQGlobal.qq + "&funcname=SendMsg&timeout=10";
         json.put("toUser", group.getId());
         json.put("sendToType", 2);
         json.put("groupid", 0);

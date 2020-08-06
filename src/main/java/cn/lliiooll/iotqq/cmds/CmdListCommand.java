@@ -1,8 +1,8 @@
 package cn.lliiooll.iotqq.cmds;
 
 
-import cn.lliiooll.iotqq.IOTQQMain;
-import cn.lliiooll.iotqq.core.IOTGlobal;
+import cn.lliiooll.iotqq.OPQMain;
+import cn.lliiooll.iotqq.core.OPQGlobal;
 import cn.lliiooll.iotqq.core.data.message.MessageChain;
 import cn.lliiooll.iotqq.core.data.message.MessageFrom;
 import cn.lliiooll.iotqq.core.data.message.data.TextMessage;
@@ -53,9 +53,9 @@ public class CmdListCommand implements CommandExecutor {
             }
         }
         if (result.type == MessageFrom.GROUP)
-            IOTGlobal.sendGroupMessage(MessageChain.newCall(new TextMessage("未知的指令.请使用 " + IOTQQMain.command + "cmdlist 来获得指令列表")), result.group);
+            OPQGlobal.sendGroupMessage(MessageChain.newCall(new TextMessage("未知的指令.请使用 " + OPQMain.command + "cmdlist 来获得指令列表")), result.group);
         else
-            IOTGlobal.sendFriendMessage(MessageChain.newCall(new TextMessage("未知的指令.请使用 " + IOTQQMain.command + "cmdlist 来获得指令列表")), (Friend) result.sender);
+            OPQGlobal.sendFriendMessage(MessageChain.newCall(new TextMessage("未知的指令.请使用 " + OPQMain.command + "cmdlist 来获得指令列表")), (Friend) result.sender);
         return true;
     }
 }

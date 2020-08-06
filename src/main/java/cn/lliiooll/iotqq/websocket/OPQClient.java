@@ -21,12 +21,12 @@ import java.net.URI;
 import java.util.concurrent.ExecutorService;
 
 
-public class IOTClient extends WebSocketClient {
+public class OPQClient extends WebSocketClient {
 
     static Logger log = LogManager.getLogger();
     private static ExecutorService main = TaskUtils.create("MessageTask-%d");
 
-    public IOTClient(String uri) {
+    public OPQClient(String uri) {
         super(URI.create(uri));
     }
 

@@ -1,14 +1,13 @@
 package cn.lliiooll.iotqq.core.managers.cmd;
 
-import cn.lliiooll.iotqq.IOTQQMain;
-import cn.lliiooll.iotqq.core.IOTGlobal;
+import cn.lliiooll.iotqq.OPQMain;
+import cn.lliiooll.iotqq.core.OPQGlobal;
 import cn.lliiooll.iotqq.core.data.group.Group;
 import cn.lliiooll.iotqq.core.data.message.MessageChain;
 import cn.lliiooll.iotqq.core.data.message.MessageFrom;
 import cn.lliiooll.iotqq.core.data.message.data.Message;
 import cn.lliiooll.iotqq.core.data.message.data.TextMessage;
 import cn.lliiooll.iotqq.core.data.user.Friend;
-import cn.lliiooll.iotqq.core.data.user.Member;
 import cn.lliiooll.iotqq.core.data.user.User;
 import cn.lliiooll.iotqq.core.managers.cmd.annotations.Command;
 import cn.lliiooll.iotqq.utils.JarUtils;
@@ -40,11 +39,11 @@ public class CommandManager {
             if (loadClass.getAnnotation(Command.class) != null) {
                 Command c = loadClass.getAnnotation(Command.class);
                 executors.put(c.name(), loadClass);// 注册主要指令
-                if (IOTQQMain.isDebug())
+                if (OPQMain.isDebug())
                     LogManager.getLogger().info("注册指令 " + loadClass.getName() + "(" + c.name() + ")");
                 for (String alia : c.alias()) {
                     executors.put(alia, loadClass);
-                    if (IOTQQMain.isDebug())
+                    if (OPQMain.isDebug())
                         LogManager.getLogger().info("注册别称 " + loadClass.getName() + "(" + alia + ")");
                 }
                 usages.put(loadClass, c.usage());
@@ -59,9 +58,9 @@ public class CommandManager {
     public static void call(Message messages, User sender, Group group, MessageFrom type) {
         if (System.currentTimeMillis() - last < 3000) {
             if (type == MessageFrom.GROUP)
-                IOTGlobal.sendGroupMessage(MessageChain.newCall(new TextMessage("指令发送太快了哦")), group);
+                OPQGlobal.sendGroupMessage(MessageChain.newCall(new TextMessage("指令发送太快了哦")), group);
             else
-                IOTGlobal.sendFriendMessage(MessageChain.newCall(new TextMessage("指令发送太快了哦")), (Friend) sender);
+                OPQGlobal.sendFriendMessage(MessageChain.newCall(new TextMessage("指令发送太快了哦")), (Friend) sender);
         } else {
             cmds.execute(() -> callA(messages, sender, group, type));
         }
@@ -70,7 +69,7 @@ public class CommandManager {
 
     @SneakyThrows
     private static void callA(Message messages, User sender, Group group, MessageFrom type) {
-        String msg = messages.messageToString().replaceFirst(IOTQQMain.command, "");
+        String msg = messages.messageToString().replaceFirst(OPQMain.command, "");
         while (msg.contains("  ")) {
             msg = msg.replace("  ", " ");// 吧两个空格替换为一个
         }
@@ -89,15 +88,15 @@ public class CommandManager {
                 cr.setGroup(type == MessageFrom.GROUP ? group : new Group());
                 if (!(Arrays.asList(executor.getInterfaces()).contains(CommandExecutor.class) && (boolean) executor.getMethod("onCommand", CommandResult.class).invoke(executor.newInstance(), cr))) {
                     if (type == MessageFrom.GROUP)
-                        IOTGlobal.sendGroupMessage(MessageChain.newCall(new TextMessage("指令执行失败。用法：" + usages.get(executor))), group);
+                        OPQGlobal.sendGroupMessage(MessageChain.newCall(new TextMessage("指令执行失败。用法：" + usages.get(executor))), group);
                     else
-                        IOTGlobal.sendFriendMessage(MessageChain.newCall(new TextMessage("指令执行失败。用法：" + usages.get(executor))), (Friend) sender);
+                        OPQGlobal.sendFriendMessage(MessageChain.newCall(new TextMessage("指令执行失败。用法：" + usages.get(executor))), (Friend) sender);
                 }
             } else {
                 if (type == MessageFrom.GROUP)
-                    group.sendMessage(MessageChain.newCall(new TextMessage("未知的指令.请使用 " + IOTQQMain.command + "cmdlist 来获得指令列表")));
+                    group.sendMessage(MessageChain.newCall(new TextMessage("未知的指令.请使用 " + OPQMain.command + "cmdlist 来获得指令列表")));
                 else
-                    IOTGlobal.sendFriendMessage(MessageChain.newCall(new TextMessage("未知的指令.请使用 " + IOTQQMain.command + "cmdlist 来获得指令列表")), (Friend) sender);
+                    OPQGlobal.sendFriendMessage(MessageChain.newCall(new TextMessage("未知的指令.请使用 " + OPQMain.command + "cmdlist 来获得指令列表")), (Friend) sender);
             }
         }
     }

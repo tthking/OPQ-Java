@@ -1,10 +1,6 @@
 package cn.lliiooll.iotqq.event;
 
-import cn.lliiooll.iotqq.IOTQQMain;
-import cn.lliiooll.iotqq.core.IOTGlobal;
-import cn.lliiooll.iotqq.core.data.group.Group;
-import cn.lliiooll.iotqq.core.data.message.MessageFrom;
-import cn.lliiooll.iotqq.core.managers.cmd.CommandManager;
+import cn.lliiooll.iotqq.core.OPQGlobal;
 import cn.lliiooll.iotqq.core.managers.event.EventHandler;
 import cn.lliiooll.iotqq.core.managers.event.data.FriendMessageEvent;
 import cn.lliiooll.iotqq.core.managers.event.data.FriendMessageSendEvent;
@@ -17,7 +13,7 @@ public class LoggerListener {
     @EventHandler
     public void onGroup(GroupMessageEvent event) {
         StringBuilder sb = new StringBuilder();
-        sb.append(IOTGlobal.getQq())
+        sb.append(OPQGlobal.getQq())
                 .append(" <- 群: ")
                 .append(event.getGroup().getName())
                 .append("（")
@@ -36,7 +32,7 @@ public class LoggerListener {
     @EventHandler
     public void onPrivate(FriendMessageEvent event) {
         StringBuilder sb = new StringBuilder();
-        sb.append(IOTGlobal.getQq())
+        sb.append(OPQGlobal.getQq())
                 .append(" <- 私聊: ")
                 .append(event.getSender().getNick())
                 .append("（")
@@ -50,7 +46,7 @@ public class LoggerListener {
     @EventHandler
     public void onGroupSend(GroupMessageSendEvent event) {
         StringBuilder sb = new StringBuilder();
-        sb.append(IOTGlobal.getQq())
+        sb.append(OPQGlobal.getQq())
                 .append(" -> 群: ")
                 .append(event.getGroup().getName())
                 .append("（")
@@ -64,7 +60,7 @@ public class LoggerListener {
     @EventHandler
     public void onPrivateSend(FriendMessageSendEvent event) {
         StringBuilder sb = new StringBuilder();
-        sb.append(IOTGlobal.getQq())
+        sb.append(OPQGlobal.getQq())
                 .append(" -> 私聊: ")
                 .append(event.getMessage().messageToString());
         LogManager.getLogger().info(sb.toString());

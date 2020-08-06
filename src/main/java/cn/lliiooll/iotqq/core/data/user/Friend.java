@@ -1,6 +1,6 @@
 package cn.lliiooll.iotqq.core.data.user;
 
-import cn.lliiooll.iotqq.core.IOTGlobal;
+import cn.lliiooll.iotqq.core.OPQGlobal;
 import cn.lliiooll.iotqq.core.data.message.MessageChain;
 import lombok.Data;
 
@@ -10,6 +10,6 @@ public class Friend implements User {
     public long id;
 
     public void sendMessage(MessageChain messageChain) {
-        IOTGlobal.sendFriendMessage(messageChain, this);
+        OPQGlobal.sendFriendMessage(messageChain, this);
     }
 }

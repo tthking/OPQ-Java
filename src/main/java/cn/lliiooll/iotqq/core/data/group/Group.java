@@ -1,6 +1,6 @@
 package cn.lliiooll.iotqq.core.data.group;
 
-import cn.lliiooll.iotqq.core.IOTGlobal;
+import cn.lliiooll.iotqq.core.OPQGlobal;
 import cn.lliiooll.iotqq.core.data.message.MessageChain;
 import lombok.Data;
 
@@ -10,6 +10,6 @@ public class Group {
     public String name;
 
     public void sendMessage(MessageChain messageChain) {
-        IOTGlobal.sendGroupMessage(messageChain, this);
+        OPQGlobal.sendGroupMessage(messageChain, this);
     }
 }

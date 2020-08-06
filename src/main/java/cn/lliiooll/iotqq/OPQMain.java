@@ -1,9 +1,9 @@
 package cn.lliiooll.iotqq;
 
-import cn.lliiooll.iotqq.core.IOTQQ;
-import cn.lliiooll.iotqq.core.IOTQQBuilder;
+import cn.lliiooll.iotqq.core.OPQ;
+import cn.lliiooll.iotqq.core.OPQBuilder;
 
-public class IOTQQMain {
+public class OPQMain {
 
 
     public static String command = "#";
@@ -14,11 +14,11 @@ public class IOTQQMain {
      * @param args
      */
     public static void main(String[] args) {
-        IOTQQ iotqq = IOTQQBuilder.builder()
-                .setURL("IOTQQ地址")
+        OPQ opq = OPQBuilder.builder()
+                .setURL("OPQ地址,例如127.0.0.1:8888,不带http")
                 .setQQ(1234567890L)// 机器人QQ号
                 .build();
-        iotqq.init("cn.lliiooll");// 开发包名, 用于自动注册指令和监听器用
+        opq.init("cn.lliiooll");// 开发包名, 用于自动注册指令和监听器用
     }
 
     /**

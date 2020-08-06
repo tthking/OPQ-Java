@@ -1,7 +1,7 @@
 package cn.lliiooll.iotqq.utils;
 
 
-import cn.lliiooll.iotqq.IOTQQMain;
+import cn.lliiooll.iotqq.OPQMain;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
 import lombok.Getter;
@@ -43,7 +43,7 @@ public class JarUtils {
                     continue;
                 }
                 try {
-                    if (IOTQQMain.isDebug()) LogManager.getLogger().info("加载类: " + className);
+                    if (OPQMain.isDebug()) LogManager.getLogger().info("加载类: " + className);
                     classes.add(Class.forName(className));
                 } catch (ClassNotFoundException e) {
                     LogManager.getLogger().error("加载失败的类: " + className);

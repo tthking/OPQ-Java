@@ -5,7 +5,7 @@ import cn.lliiooll.iotqq.core.managers.cmd.CommandManager;
 import cn.lliiooll.iotqq.core.managers.event.EventManager;
 import cn.lliiooll.iotqq.core.queue.IQueue;
 import cn.lliiooll.iotqq.utils.JarUtils;
-import cn.lliiooll.iotqq.websocket.IOTClient;
+import cn.lliiooll.iotqq.websocket.OPQClient;
 import com.alibaba.fastjson.JSONArray;
 import lombok.Getter;
 import org.apache.logging.log4j.LogManager;
@@ -13,7 +13,7 @@ import org.apache.logging.log4j.Logger;
 
 import java.net.URI;
 
-public class IOTQQ {
+public class OPQ {
 
     @Getter
     private final String url;
@@ -21,15 +21,15 @@ public class IOTQQ {
     private final long qq;
     private final Logger log = LogManager.getLogger();
     @Getter
-    private IOTClient client;
+    private OPQClient client;
 
-    public IOTQQ(String url, long qq) {
+    public OPQ(String url, long qq) {
         this.url = url;
         this.qq = qq;
     }
 
     public void connect() {
-        IOTClient client = new IOTClient("ws://" + this.url + "/socket.io/" + URI.create("http://" + this.url + "/").getQuery());
+        OPQClient client = new OPQClient("ws://" + this.url + "/socket.io/" + URI.create("http://" + this.url + "/").getQuery());
         this.client = client;
         client.setConnectionLostTimeout(-1);
         client.connect();
@@ -59,7 +59,7 @@ public class IOTQQ {
         CommandManager.init();
         connect();
         listen();
-        IOTGlobal.init(this.getQq(), this.getUrl());
+        OPQGlobal.init(this.getQq(), this.getUrl());
         IQueue.init();
     }
 

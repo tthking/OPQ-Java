@@ -1,6 +1,6 @@
 package cn.lliiooll.iotqq.core.managers.event;
 
-import cn.lliiooll.iotqq.IOTQQMain;
+import cn.lliiooll.iotqq.OPQMain;
 import cn.lliiooll.iotqq.utils.JarUtils;
 import cn.lliiooll.iotqq.utils.TaskUtils;
 import org.apache.logging.log4j.LogManager;
@@ -40,7 +40,7 @@ public class EventManager {
                                 Collections.sort(list.order);
                                 f.setAccessible(true);
                                 f.set(null, list);
-                                if (IOTQQMain.isDebug())
+                                if (OPQMain.isDebug())
                                     LogManager.getLogger().info("监听器 " + method.getName() + " 注册到 " + eventC.getName() + " 完毕");
                                 count++;
                             } catch (Exception e) {
