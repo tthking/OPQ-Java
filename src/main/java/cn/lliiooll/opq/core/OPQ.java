@@ -35,15 +35,16 @@ public class OPQ {
         client.connect();
         new Thread(() -> {
             while (true) {
-
                 try {
                     Thread.sleep(30000);
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
-                log.info("心跳中...");
-                AsyncKeepLive.waitReplay(System.currentTimeMillis());
-                client.send("2");
+                if (!client.isClosed()) {
+                    log.info("心跳中...");
+                    AsyncKeepLive.waitReplay(System.currentTimeMillis());
+                    client.send("2");
+                }
             }
         }, "AsyncKeepLive").start();
     }

@@ -11,6 +11,7 @@ import cn.lliiooll.opq.core.managers.event.data.FriendMessageEvent;
 import cn.lliiooll.opq.core.managers.event.data.GroupMessageEvent;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
+import org.apache.logging.log4j.LogManager;
 
 public class MessageFactory {
     public static void execute(String dataText, MessageFrom type) {
@@ -70,6 +71,17 @@ public class MessageFactory {
                 return new ReplayMessage(JSON.parseObject(msg), msgid, random, time, sender);
             case VideoMsg:
                 return new VideoMessage(JSON.parseObject(msg), msgid, random, time, sender);
+            case GroupFileMsg:
+                return new GroupFileMessage(JSON.parseObject(msg), msgid, random, time, (Member) sender);
+            case FriendFileMsg:
+                //LogManager.getLogger().info(msg);
+                return new FriendFileMessage(JSON.parseObject(msg), msgid, random, time, (Friend) sender);
+            case RedBagMsg:
+                return new RedBagMessage(JSON.parseObject(msg).getString("Content"), msgid, random, time, sender);
+            case BigFaceMsg:
+                LogManager.getLogger().info(msg);
+            case TempSessionMsg:
+                LogManager.getLogger().info(msg);
         }
         return new BaseMessage(msgid, random, time, sender);
     }

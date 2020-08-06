@@ -90,7 +90,7 @@ public class OPQClient extends WebSocketClient {
             Thread.sleep(1000);
             log.info("将在 " + i + " 秒后重连");
         }
-        log.info("第 " + count + " 重连...");
+        log.info("第 " + count + " 次重连...");
         this.reconnect();
         count++;
     }

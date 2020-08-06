@@ -38,6 +38,10 @@ public enum MessageType {
      */
     GroupFileMsg,
     /**
+     * 好友文件消息
+     */
+    FriendFileMsg,
+    /**
      * 视频消息
      */
     VideoMsg,
