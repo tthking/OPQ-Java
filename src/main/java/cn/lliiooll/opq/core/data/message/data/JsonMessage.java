@@ -10,7 +10,7 @@ import lombok.EqualsAndHashCode;
 @Data
 public class JsonMessage extends BaseMessage {
 
-    public String msg;
+    public String msg = "[JSON]";
 
     public JsonMessage(String msg, long msgid, long random) {
         super(msgid, random, System.currentTimeMillis(), new Friend(OPQGlobal.getQq()));

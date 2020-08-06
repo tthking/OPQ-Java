@@ -11,14 +11,14 @@ import lombok.EqualsAndHashCode;
 @Data
 public class TextMessage extends BaseMessage {
 
-    public String msg;
+    public String msg = "[消息]";
 
     public TextMessage(String msg, long msgid, long random, long time, User sender) {
         super(msgid, random, time, sender);
         this.msg = msg;
     }
 
-    public TextMessage(String s) {
+    public TextMessage(String msg) {
         super(0, 0, System.currentTimeMillis(), new Friend(OPQGlobal.qq));
         this.msg = msg;
     }

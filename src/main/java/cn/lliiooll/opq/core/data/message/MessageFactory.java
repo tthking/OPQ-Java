@@ -1,5 +1,6 @@
 package cn.lliiooll.opq.core.data.message;
 
+import cn.lliiooll.opq.core.OPQGlobal;
 import cn.lliiooll.opq.core.data.group.Group;
 import cn.lliiooll.opq.core.data.message.data.*;
 import cn.lliiooll.opq.core.data.user.Friend;
@@ -38,11 +39,13 @@ public class MessageFactory {
             EventManager.invoke(new GroupMessageEvent(message, group, member));
         } else if (type == MessageFrom.FRIEND) {
             long senderId = data.getLongValue("FromUin");
+            if (senderId != OPQGlobal.getQq()) {
+                Friend friend = new Friend();
+                friend.setId(senderId);
+                Message message = executeMessage(msgid, 0, msg, time, friend, messageType);
+                EventManager.invoke(new FriendMessageEvent(message, friend));
+            }
             //long getterId = data.getLongValue("ToUin");
-            Friend friend = new Friend();
-            friend.setId(senderId);
-            Message message = executeMessage(msgid, 0, msg, time, friend, messageType);
-            EventManager.invoke(new FriendMessageEvent(message, friend));
         }
     }
 

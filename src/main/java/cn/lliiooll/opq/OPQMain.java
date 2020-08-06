@@ -15,7 +15,7 @@ public class OPQMain {
      */
     public static void main(String[] args) {
         OPQ iotqq = OPQBuilder.builder()
-                .setURL("127.0.0.1:8888")
+                .setURL("127.0.0.1:9763")
                 .setQQ(3483706632L)// 机器人QQ号
                 .build();
         iotqq.init("cn.lliiooll");// 开发包名, 用于自动注册指令和监听器用

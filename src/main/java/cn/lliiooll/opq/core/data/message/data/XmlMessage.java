@@ -8,7 +8,7 @@ import lombok.EqualsAndHashCode;
 @Data
 public class XmlMessage extends BaseMessage {
 
-    public String msg;
+    public String msg = "[XML]";
 
     public XmlMessage(String msg, long msgid, long random, long time, User sender) {
         super(msgid,random, time, sender);
