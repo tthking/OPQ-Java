@@ -25,18 +25,20 @@ public class MessageFactory {
             String senderName = data.getString("FromNickName");
             String groupName = data.getString("FromGroupName");
             long senderId = data.getLongValue("FromUserId");
-            long groupId = data.getLongValue("FromGroupId");
-            //long time = data.getLongValue("MsgTime");
-            long random = data.getLongValue("MsgRandom");
-            Group group = new Group();
-            group.setId(groupId);
-            group.setName(groupName);
-            Member member = new Member();
-            member.setFromGroup(group);
-            member.setId(senderId);
-            member.setName(senderName);
-            Message message = executeMessage(msgid, random, msg, time, member, messageType);
-            EventManager.invoke(new GroupMessageEvent(message, group, member));
+            if (senderId != OPQGlobal.getQq()) {
+                long groupId = data.getLongValue("FromGroupId");
+                //long time = data.getLongValue("MsgTime");
+                long random = data.getLongValue("MsgRandom");
+                Group group = new Group();
+                group.setId(groupId);
+                group.setName(groupName);
+                Member member = new Member();
+                member.setFromGroup(group);
+                member.setId(senderId);
+                member.setName(senderName);
+                Message message = executeMessage(msgid, random, msg, time, member, messageType);
+                EventManager.invoke(new GroupMessageEvent(message, group, member));
+            }
         } else if (type == MessageFrom.FRIEND) {
             long senderId = data.getLongValue("FromUin");
             if (senderId != OPQGlobal.getQq()) {
@@ -56,7 +58,7 @@ public class MessageFactory {
             case VoiceMsg:
                 return new VoiceMessage(JSON.parseObject(msg), msgid, random, time, sender);
             case JsonMsg:
-                return new XmlMessage(JSON.parseObject(msg).getString("Content"), msgid, random, time, sender);
+                return new XmlMessage(JSON.parseObject(JSON.parseObject(msg).getString("Content")).getString("Content"), msgid, random, time, sender);
             case PicMsg:
                 return new PicMessage(JSON.parseObject(msg), msgid, random, time, sender);
             case AtMsg:

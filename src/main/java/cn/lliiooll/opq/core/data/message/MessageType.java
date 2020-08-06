@@ -42,6 +42,10 @@ public enum MessageType {
      */
     VideoMsg,
     /**
+     * 未知
+     */
+    TempSessionMsg,
+    /**
      * 回复消息
      */
     ReplayMsg
