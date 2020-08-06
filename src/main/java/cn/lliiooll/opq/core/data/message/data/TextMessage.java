@@ -1,5 +1,8 @@
 package cn.lliiooll.opq.core.data.message.data;
 
+import cn.lliiooll.opq.core.OPQ;
+import cn.lliiooll.opq.core.OPQGlobal;
+import cn.lliiooll.opq.core.data.user.Friend;
 import cn.lliiooll.opq.core.data.user.User;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -12,6 +15,11 @@ public class TextMessage extends BaseMessage {
 
     public TextMessage(String msg, long msgid, long random, long time, User sender) {
         super(msgid, random, time, sender);
+        this.msg = msg;
+    }
+
+    public TextMessage(String s) {
+        super(0, 0, System.currentTimeMillis(), new Friend(OPQGlobal.qq));
         this.msg = msg;
     }
 

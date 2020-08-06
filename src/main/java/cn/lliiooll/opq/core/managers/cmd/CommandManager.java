@@ -58,9 +58,9 @@ public class CommandManager {
     public static void call(Message messages, User sender, Group group, MessageFrom type) {
         if (System.currentTimeMillis() - last < 3000) {
             if (type == MessageFrom.GROUP)
-                OPQGlobal.sendGroupMessage(MessageChain.newCall(new TextMessage("指令发送太快了哦", msgid, random, time, sender)), group);
+                OPQGlobal.sendGroupMessage(MessageChain.newCall(new TextMessage("指令发送太快了哦")), group);
             else
-                OPQGlobal.sendFriendMessage(MessageChain.newCall(new TextMessage("指令发送太快了哦", msgid, random, time, sender)), (Friend) sender);
+                OPQGlobal.sendFriendMessage(MessageChain.newCall(new TextMessage("指令发送太快了哦")), (Friend) sender);
         } else {
             cmds.execute(() -> callA(messages, sender, group, type));
         }
@@ -94,15 +94,15 @@ public class CommandManager {
                 cr.setGroup(type == MessageFrom.GROUP ? group : new Group());
                 if (!(Arrays.asList(executor.getInterfaces()).contains(CommandExecutor.class) && (boolean) executor.getMethod("onCommand", CommandResult.class).invoke(executor.newInstance(), cr))) {
                     if (type == MessageFrom.GROUP)
-                        OPQGlobal.sendGroupMessage(MessageChain.newCall(new TextMessage("指令执行失败。用法：" + usages.get(executor), msgid, random, time, sender)), group);
+                        OPQGlobal.sendGroupMessage(MessageChain.newCall(new TextMessage("指令执行失败。用法：" + usages.get(executor))), group);
                     else
-                        OPQGlobal.sendFriendMessage(MessageChain.newCall(new TextMessage("指令执行失败。用法：" + usages.get(executor), msgid, random, time, sender)), (Friend) sender);
+                        OPQGlobal.sendFriendMessage(MessageChain.newCall(new TextMessage("指令执行失败。用法：" + usages.get(executor))), (Friend) sender);
                 }
             } else {
                 if (type == MessageFrom.GROUP)
-                    group.sendMessage(MessageChain.newCall(new TextMessage("未知的指令.请使用 " + OPQMain.command + "cmdlist 来获得指令列表", msgid, random, time, sender)));
+                    group.sendMessage(MessageChain.newCall(new TextMessage("未知的指令.请使用 " + OPQMain.command + "cmdlist 来获得指令列表")));
                 else
-                    OPQGlobal.sendFriendMessage(MessageChain.newCall(new TextMessage("未知的指令.请使用 " + OPQMain.command + "cmdlist 来获得指令列表", msgid, random, time, sender)), (Friend) sender);
+                    OPQGlobal.sendFriendMessage(MessageChain.newCall(new TextMessage("未知的指令.请使用 " + OPQMain.command + "cmdlist 来获得指令列表")), (Friend) sender);
             }
         }
     }

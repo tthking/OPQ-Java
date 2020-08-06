@@ -53,9 +53,9 @@ public class CmdListCommand implements CommandExecutor {
             }
         }
         if (result.type == MessageFrom.GROUP)
-            OPQGlobal.sendGroupMessage(MessageChain.newCall(new TextMessage("未知的指令.请使用 " + OPQMain.command + "cmdlist 来获得指令列表", msgid, random, time, sender)), result.group);
+            OPQGlobal.sendGroupMessage(MessageChain.newCall(new TextMessage("未知的指令.请使用 " + OPQMain.command + "cmdlist 来获得指令列表")), result.group);
         else
-            OPQGlobal.sendFriendMessage(MessageChain.newCall(new TextMessage("未知的指令.请使用 " + OPQMain.command + "cmdlist 来获得指令列表", msgid, random, time, sender)), (Friend) result.sender);
+            OPQGlobal.sendFriendMessage(MessageChain.newCall(new TextMessage("未知的指令.请使用 " + OPQMain.command + "cmdlist 来获得指令列表")), (Friend) result.sender);
         return true;
     }
 }

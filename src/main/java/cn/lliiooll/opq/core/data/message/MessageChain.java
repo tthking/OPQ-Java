@@ -21,7 +21,7 @@ public class MessageChain {
     }
 
     public static MessageChain newCall(String message) {
-        return new MessageChain(new TextMessage(message, msgid, random, time, sender));
+        return new MessageChain(new TextMessage(message));
     }
 
     public MessageChain put(Message message) {
