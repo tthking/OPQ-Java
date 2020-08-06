@@ -12,6 +12,7 @@ import cn.lliiooll.opq.utils.TaskUtils;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
+import lombok.SneakyThrows;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.java_websocket.client.WebSocketClient;
@@ -25,6 +26,8 @@ public class OPQClient extends WebSocketClient {
 
     static Logger log = LogManager.getLogger();
     private static ExecutorService main = TaskUtils.create("MessageTask-%d");
+    private static int count = 0;
+    private static int maxCount = 10;
 
     public OPQClient(String uri) {
         super(URI.create(uri));
@@ -74,10 +77,22 @@ public class OPQClient extends WebSocketClient {
 
     }
 
+    @SneakyThrows
     @Override
     public void onClose(int code, String reason, boolean remote) {
-        main.shutdown();
-        log.info("连接已经关闭");
+        //main.shutdown();
+        log.info("连接已经断开");
+        if (count > maxCount) {
+            log.info("重连次数达到上限，程序退出");
+            System.exit(0);
+        }
+        for (int i = 5; i > 0; i--) {
+            Thread.sleep(1000);
+            log.info("将在 " + i + " 秒后重连");
+        }
+        log.info("第 " + count + " 重连...");
+        this.reconnect();
+        count++;
     }
 
     @Override

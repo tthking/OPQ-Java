@@ -1,13 +1,17 @@
 package cn.lliiooll.opq.core.data.message.data;
 
+import cn.lliiooll.opq.core.data.user.User;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 
+@EqualsAndHashCode(callSuper = true)
 @Data
-public class TextMessage implements Message {
+public class TextMessage extends BaseMessage {
 
     public String msg;
 
-    public TextMessage(String msg) {
+    public TextMessage(String msg, long msgid, long random, long time, User sender) {
+        super(msgid, random, time, sender);
         this.msg = msg;
     }
 

@@ -15,7 +15,7 @@ dependencies {
     compile 'com.alibaba:fastjson:1.2.58'
     compile 'commons-io:commons-io:2.5'
     compile 'com.google.guava:guava:20.0'
-    compile 'org.projectlombok:lombok:1.18.8'
+    compile 'org.projectlombok:lombok:1.18.10'
     annotationProcessor 'org.projectlombok:lombok:1.18.8'
     compile 'com.squareup.okhttp3:okhttp:4.0.0'
     compile 'com.google.code.gson:gson:2.8.6'

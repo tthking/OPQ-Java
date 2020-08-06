@@ -25,7 +25,10 @@ public class LoggerListener {
                 .append(event.getSender().getId())
                 .append("）")
                 .append(" 消息：")
-                .append(event.getMessage().messageToString());
+                .append(event.getMessage().messageToString()
+                        .replace("\n", "")
+                        .replace("\r", "")
+                        .replace("\t", ""));
         LogManager.getLogger().info(sb.toString());
     }
 
@@ -39,7 +42,10 @@ public class LoggerListener {
                 .append(event.getSender().getId())
                 .append("）")
                 .append(" 消息：")
-                .append(event.getMessage().messageToString());
+                .append(event.getMessage().messageToString()
+                        .replace("\n", "")
+                        .replace("\r", "")
+                        .replace("\t", ""));
         LogManager.getLogger().info(sb.toString());
     }
 
@@ -53,7 +59,10 @@ public class LoggerListener {
                 .append(event.getGroup().getId())
                 .append("）")
                 .append(" 消息：")
-                .append(event.getMessage().messageToString());
+                .append(event.getMessage().messageToString()
+                        .replace("\n", "")
+                        .replace("\r", "")
+                        .replace("\t", ""));
         LogManager.getLogger().info(sb.toString());
     }
 

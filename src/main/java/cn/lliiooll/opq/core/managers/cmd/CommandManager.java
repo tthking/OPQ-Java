@@ -58,9 +58,9 @@ public class CommandManager {
     public static void call(Message messages, User sender, Group group, MessageFrom type) {
         if (System.currentTimeMillis() - last < 3000) {
             if (type == MessageFrom.GROUP)
-                OPQGlobal.sendGroupMessage(MessageChain.newCall(new TextMessage("指令发送太快了哦")), group);
+                OPQGlobal.sendGroupMessage(MessageChain.newCall(new TextMessage("指令发送太快了哦", msgid, random, time, sender)), group);
             else
-                OPQGlobal.sendFriendMessage(MessageChain.newCall(new TextMessage("指令发送太快了哦")), (Friend) sender);
+                OPQGlobal.sendFriendMessage(MessageChain.newCall(new TextMessage("指令发送太快了哦", msgid, random, time, sender)), (Friend) sender);
         } else {
             cmds.execute(() -> callA(messages, sender, group, type));
         }
@@ -76,7 +76,13 @@ public class CommandManager {
         String[] sourceCmd = msg.split(" ");// 通过空格来切割
         if (sourceCmd.length > 0) {// 保证不为空
             String label = sourceCmd[0];
-            if (executors.containsKey(label)) {
+            boolean q = has(label);
+            LogManager.getLogger().info("====================");
+            LogManager.getLogger().info(q);
+            LogManager.getLogger().info(label);
+            LogManager.getLogger().info(executors.keySet());
+            LogManager.getLogger().info("====================");
+            if (q) {
                 String[] args = new String[sourceCmd.length - 1];
                 System.arraycopy(sourceCmd, 1, args, 0, sourceCmd.length - 1);
                 Class<?> executor = executors.get(label);
@@ -88,15 +94,15 @@ public class CommandManager {
                 cr.setGroup(type == MessageFrom.GROUP ? group : new Group());
                 if (!(Arrays.asList(executor.getInterfaces()).contains(CommandExecutor.class) && (boolean) executor.getMethod("onCommand", CommandResult.class).invoke(executor.newInstance(), cr))) {
                     if (type == MessageFrom.GROUP)
-                        OPQGlobal.sendGroupMessage(MessageChain.newCall(new TextMessage("指令执行失败。用法：" + usages.get(executor))), group);
+                        OPQGlobal.sendGroupMessage(MessageChain.newCall(new TextMessage("指令执行失败。用法：" + usages.get(executor), msgid, random, time, sender)), group);
                     else
-                        OPQGlobal.sendFriendMessage(MessageChain.newCall(new TextMessage("指令执行失败。用法：" + usages.get(executor))), (Friend) sender);
+                        OPQGlobal.sendFriendMessage(MessageChain.newCall(new TextMessage("指令执行失败。用法：" + usages.get(executor), msgid, random, time, sender)), (Friend) sender);
                 }
             } else {
                 if (type == MessageFrom.GROUP)
-                    group.sendMessage(MessageChain.newCall(new TextMessage("未知的指令.请使用 " + OPQMain.command + "cmdlist 来获得指令列表")));
+                    group.sendMessage(MessageChain.newCall(new TextMessage("未知的指令.请使用 " + OPQMain.command + "cmdlist 来获得指令列表", msgid, random, time, sender)));
                 else
-                    OPQGlobal.sendFriendMessage(MessageChain.newCall(new TextMessage("未知的指令.请使用 " + OPQMain.command + "cmdlist 来获得指令列表")), (Friend) sender);
+                    OPQGlobal.sendFriendMessage(MessageChain.newCall(new TextMessage("未知的指令.请使用 " + OPQMain.command + "cmdlist 来获得指令列表", msgid, random, time, sender)), (Friend) sender);
             }
         }
     }

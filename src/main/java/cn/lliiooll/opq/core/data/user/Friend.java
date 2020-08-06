@@ -9,6 +9,13 @@ public class Friend implements User {
     public String nick = "";
     public long id;
 
+    public Friend(long qq) {
+        this.id = qq;
+    }
+
+    public Friend() {
+    }
+
     public void sendMessage(MessageChain messageChain) {
         OPQGlobal.sendFriendMessage(messageChain, this);
     }

@@ -4,6 +4,7 @@ import cn.lliiooll.opq.core.data.group.Group;
 import cn.lliiooll.opq.core.data.message.data.*;
 import cn.lliiooll.opq.core.data.user.Friend;
 import cn.lliiooll.opq.core.data.user.Member;
+import cn.lliiooll.opq.core.data.user.User;
 import cn.lliiooll.opq.core.managers.event.EventManager;
 import cn.lliiooll.opq.core.managers.event.data.FriendMessageEvent;
 import cn.lliiooll.opq.core.managers.event.data.GroupMessageEvent;
@@ -14,17 +15,18 @@ public class MessageFactory {
     public static void execute(String dataText, MessageFrom type) {
         JSONObject d = JSON.parseObject(dataText);
         JSONObject data = d.getJSONObject("CurrentPacket").getJSONObject("Data");
-        long qq = d.getLong("CurrentQQ");
+        //long qq = d.getLong("CurrentQQ");
         long msgid = data.getLongValue("MsgSeq");
         String msg = data.getString("Content");
         MessageType messageType = MessageType.valueOf(data.getString("MsgType"));
+        long time = System.currentTimeMillis();
         if (type == MessageFrom.GROUP) {
             String senderName = data.getString("FromNickName");
             String groupName = data.getString("FromGroupName");
             long senderId = data.getLongValue("FromUserId");
             long groupId = data.getLongValue("FromGroupId");
             //long time = data.getLongValue("MsgTime");
-            //long random = data.getLongValue("MsgRandom");
+            long random = data.getLongValue("MsgRandom");
             Group group = new Group();
             group.setId(groupId);
             group.setName(groupName);
@@ -32,38 +34,38 @@ public class MessageFactory {
             member.setFromGroup(group);
             member.setId(senderId);
             member.setName(senderName);
-            Message message = executeMessage(msg, messageType);
+            Message message = executeMessage(msgid, random, msg, time, member, messageType);
             EventManager.invoke(new GroupMessageEvent(message, group, member));
         } else if (type == MessageFrom.FRIEND) {
             long senderId = data.getLongValue("FromUin");
             //long getterId = data.getLongValue("ToUin");
             Friend friend = new Friend();
             friend.setId(senderId);
-            Message message = executeMessage(msg, messageType);
+            Message message = executeMessage(msgid, 0, msg, time, friend, messageType);
             EventManager.invoke(new FriendMessageEvent(message, friend));
         }
     }
 
-    private static Message executeMessage(String msg, MessageType messageType) {
+    private static Message executeMessage(long msgid, long random, String msg, long time, User sender, MessageType messageType) {
         switch (messageType) {
             case TextMsg:
-                return new TextMessage(msg);
+                return new TextMessage(msg, msgid, random, time, sender);
             case VoiceMsg:
-                return new VoiceMessage(JSON.parseObject(msg));
+                return new VoiceMessage(JSON.parseObject(msg), msgid, random, time, sender);
             case JsonMsg:
-                return new XmlMessage(JSON.parseObject(msg).getString("Content"));
+                return new XmlMessage(JSON.parseObject(msg).getString("Content"), msgid, random, time, sender);
             case PicMsg:
-                return new PicMessage(JSON.parseObject(msg));
+                return new PicMessage(JSON.parseObject(msg), msgid, random, time, sender);
             case AtMsg:
                 JSONObject data = JSON.parseObject(msg);
-                return new AtMessage(data.getJSONArray("UserID"), data.getString("Content"));
+                return new AtMessage(data.getJSONArray("UserID"), data.getString("Content"), msgid, random, time, sender);
             case XmlMsg:
-                return new JsonMessage(msg);
+                return new JsonMessage(msg, msgid, random);
             case ReplayMsg:
-                return new ReplayMessage(JSON.parseObject(msg));
+                return new ReplayMessage(JSON.parseObject(msg), msgid, random, time, sender);
             case VideoMsg:
-                return new VideoMessage(JSON.parseObject(msg));
+                return new VideoMessage(JSON.parseObject(msg), msgid, random, time, sender);
         }
-        return new UnkonwMessage();
+        return new BaseMessage(msgid, random, time, sender);
     }
 }
