@@ -1,11 +1,11 @@
 package cn.lliiooll.opq.core.queue;
 
 import cn.lliiooll.opq.utils.TaskUtils;
+import com.google.common.base.Strings;
 import okhttp3.MediaType;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.RequestBody;
-import org.apache.logging.log4j.LogManager;
 
 import java.io.IOException;
 import java.util.concurrent.ArrayBlockingQueue;
@@ -23,13 +23,15 @@ public class IQueue {
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 } finally {
-                    if (!queue.isEmpty()) {
+                    while (!queue.isEmpty()) {
                         IRequest request = queue.poll();
                         if (request != null) {
                             try {
+                                /*
                                 LogManager.getLogger().info("==============================");
                                 LogManager.getLogger().info(request.getRequest());
                                 LogManager.getLogger().info("==============================");
+                                 */
                                 String reslut = new OkHttpClient.Builder()
                                         .build()
                                         .newCall(new Request.Builder()
@@ -40,16 +42,29 @@ public class IQueue {
                                         .body()
                                         .string();
                                 main.execute(() -> {
+                                    /*
                                     LogManager.getLogger().info("++++++++++++++++++++++++++++++");
                                     LogManager.getLogger().info(reslut);
                                     LogManager.getLogger().info("++++++++++++++++++++++++++++++");
-                                    request.getAction().onFinisher(reslut);
+                                    */
+                                    request.getAction().onFinisher(
+                                            Strings.isNullOrEmpty(reslut) ? reslut : reslut
+                                                    .replace("\n", "")
+                                                    .replace("\t", "")
+                                                    .replace("\r", "")
+                                    );
                                 });
                             } catch (IOException e) {
                                 e.printStackTrace();
                             }
                         }
+                        try {
+                            Thread.sleep(1500);
+                        } catch (InterruptedException e) {
+                            e.printStackTrace();
+                        }
                     }
+
                 }
             }
         }, "QueueThread").start();

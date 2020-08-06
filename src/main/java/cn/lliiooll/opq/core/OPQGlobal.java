@@ -61,9 +61,10 @@ public class OPQGlobal {
                     long time = System.currentTimeMillis();
                     for (JSONObject json : replay.getJSONArray("TroopList").toArray(new JSONObject[0])) {
                         Group group = new Group();
-                        group.setId(json.getLongValue("GroupID"));
+                        Long id = json.getLong("GroupId");
+                        group.setId(id);
                         group.setName(json.getString("GroupName"));
-                        groups.put(group.getId(), group);
+                        groups.put(id, group);
                     }
                     log.info("群获取完毕，总计: " + (groups.size() - 1) + "个，耗时 " + (System.currentTimeMillis() - time) + "ms");
                 }).build());
